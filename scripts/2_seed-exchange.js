@@ -106,7 +106,7 @@ async function main() {
 
 //seed open orders
   for(let i = 1; i <= 10; i++) {
-    exchange.connect(user1).makeOrder(mETH.address, tokens(10* i), DApp.address, tokens(10))
+    transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(10 * i), DApp.address, tokens(10))
     result = await transaction.wait()
 
     console.log(`Made order from ${user1.address}`)
@@ -114,7 +114,7 @@ async function main() {
     await wait(1)
   }
   for(let i = 1; i <= 10; i++) {
-    transaction = await exchange.connect(user2).makeOrder(DApp.address, tokens(10* i), mETH.address, tokens(10 *i))
+    transaction = await exchange.connect(user2).makeOrder(DApp.address, tokens(10), mETH.address, tokens(10 * i))
     result = await transaction.wait()
 
     console.log(`Made order from ${user2.address}`)
