@@ -17,8 +17,10 @@ import Markets from './Markets'
 import Balance from './Balance'
 import Order from './Order'
 import PriceChart from './PriceChart'
-import OrderBook from './OrderBook'
+import Transactions from './Transactions'
 import Trades from './Trades'
+import OrderBook from './OrderBook'
+
 
 function App() {
   const dispatch = useDispatch()
@@ -77,7 +79,7 @@ function App() {
 
           <PriceChart />
 
-          {/* Transactions */}
+          <Transactions />
 
           <Trades />
 
