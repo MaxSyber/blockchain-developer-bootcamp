@@ -148,8 +148,6 @@ export const myFilledOrdersSelector = createSelector(
 		orders = orders.sort((a,b) => b.timestamp - a.timestamp)
 		orders = decorateMyFilledOrders(orders, account, tokens)
 
-		console.log(orders)
-
 		return orders
 		}
 )
