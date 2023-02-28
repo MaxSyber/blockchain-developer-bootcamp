@@ -186,7 +186,7 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "creater",
+          "name": "creator",
           "type": "address"
         },
         {

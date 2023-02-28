@@ -99,7 +99,7 @@ const Transactions = () => {
               return(
                 <tr key={index}>
                   <td>{order.formattedTimestamp}</td>
-                  <td>style={{ color: `${order.orderClass}` }}>{order.orderSign}{order.token0Amount}</td>
+                  <td style={{ color: `${order.orderClass}` }}>{order.orderSign}{order.token0Amount}</td>
                   <td>{order.tokenPrice}</td>
               </tr>
               )

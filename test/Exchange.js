@@ -290,7 +290,7 @@ describe('Exchange', () => {
 				expect(args.amountGet).to.equal(tokens(1))
 				expect(args.tokenGive).to.equal(token1.address)
 				expect(args.amountGive).to.equal(tokens(1))
-				expect(args.creater).to.equal(user1.address)
+				expect(args.creator).to.equal(user1.address)
 				expect(args.timestamp).to.at.least(1)
 				})
 			})

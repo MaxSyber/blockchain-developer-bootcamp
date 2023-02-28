@@ -13,15 +13,50 @@ contract Exchange {
 	mapping(uint256 => bool) public orderCancelled;
 	mapping(uint256 => bool) public orderFilled;
 
-	event Deposit(address token, address user, uint256 amount, uint256 balance);
+	event Deposit(
+		address token, 
+		address user, 
+		uint256 amount, 
+		uint256 balance
+	);
 
-	event Withdraw(address token, address user, uint256 amount, uint256 balance);
+	event Withdraw(
+		address token, 
+		address user, 
+		uint256 amount, 
+		uint256 balance
+	);
 
-	event Order(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
+	event Order(
+		uint256 id, 
+		address user, 
+		address tokenGet, 
+		uint256 amountGet, 
+		address tokenGive, 
+		uint256 amountGive, 
+		uint256 timestamp
+	);
 	
-	event Cancel(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
+	event Cancel(
+		uint256 id, 
+		address user, 
+		address tokenGet, 
+		uint256 amountGet, 
+		address tokenGive, 
+		uint256 amountGive, 
+		uint256 timestamp
+	);
 
-	event Trade(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, address creater, uint256 timestamp);
+	event Trade(
+		uint256 id, 
+		address user, 
+		address tokenGet, 
+		uint256 amountGet, 
+		address tokenGive, 
+		uint256 amountGive, 
+		address creator, 
+		uint256 timestamp
+	);
 
 	struct _Order {
 		uint256 id;
