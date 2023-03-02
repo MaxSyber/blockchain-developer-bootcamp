@@ -166,15 +166,16 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 				}
 			}
 
-		case 'ORDER_Fill_SUCCESS':
+		case 'ORDER_FILL_SUCCESS':
 
-		index = state.filledOrders.data.findIndex(order => order.id.toString() === action.order.id.toString())
 
-		if (index === -1) {
+			index = state.filledOrders.data.findIndex(order => order.id.toString() === action.order.id.toString())
+
+			if (index === -1) {
 			data = [...state.filledOrders.data, action.order]
-		} else {
+			} else {
 			data = state.filledOrders.data
-		}
+			}
 			return {
 				...state,
 				transaction: {
@@ -188,6 +189,7 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 				},
 				events: [action.event, ...state.events]
 			}
+		
 		case 'ORDER_FILL_FAIL':
 			return {
 				...state,
@@ -266,7 +268,7 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 				data = state.allOrders.data
 			}
 
-		return {
+			return {
 			...state,
 			allOrders: {
 				...state.allOrders,
@@ -295,4 +297,3 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 			return state
 	}
 }
-// not loading in state variable instead is in action tab

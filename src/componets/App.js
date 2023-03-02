@@ -20,6 +20,7 @@ import PriceChart from './PriceChart'
 import Transactions from './Transactions'
 import Trades from './Trades'
 import OrderBook from './OrderBook'
+import Alert from './Alert'
 
 
 function App() {
@@ -57,8 +58,6 @@ function App() {
   return (
     <div>
 
-      {/* Navbar */}
-
       <Navbar />
 
       <main className='exchange grid'>
@@ -69,10 +68,6 @@ function App() {
           <Balance />
 
           <Order />
-
-          
-
-          {/* Order */}
 
         </section>
         <section className='exchange__section--right grid'>
@@ -88,7 +83,7 @@ function App() {
         </section>
       </main>
 
-      {/* Alert */}
+      <Alert />
 
     </div>
   );
