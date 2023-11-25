@@ -52,7 +52,7 @@ function App() {
   }
 
   useEffect(() => {
-    loadBlockchainData()
+    loadBlockchainData(subscribeToEvents)
   })
 
   return (
