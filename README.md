@@ -1,9 +1,79 @@
-Dapp Token Exchange is a fully functioning decentralized cryptocurrency exchange created to facilitate the exchange of coin pairs. This app employs two smart contracts to create new cryptocurrencies as well as the exchange to trade them on. (Deployed to the Goerli test network).
+# DApp Token Exchange
 
-The exhcange can also be run locally using npm/hardhat by imputing the following commands once you have cloned the project to your local drive into your terminal.
+A decentralized token exchange built with Solidity, Hardhat, React, Redux, and ethers.js. The app deploys mock ERC-20 tokens and an exchange contract for creating, cancelling, and filling token pair orders.
 
-1. -npm install   [Installs packages and dependancies]
-2. -npx hardhat node [Launches a local blockchain and distributes 20 Private Keys]
-3. -npx hardhat run --network localhost scripts/deploy.js  [Deploys the solidity contracts to the local node]
-4. -npx hardhat run --network localhost scripts/seed-exchange.js [Seeds the exchange with some orders the make the app have orders and trades awaiting at launch of site]
-5. -npm run start  [boots up a local web browser so you and interact with and test the application]
+Live site: https://token-exchange-seven.vercel.app/
+
+Current testnet target: Base Sepolia.
+
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a local environment file:
+
+```bash
+cp .env.example .env
+```
+
+Required deployment variables:
+
+```bash
+BASE_SEPOLIA_RPC_URL=https://base-sepolia.g.alchemy.com/v2/YOUR_KEY
+PRIVATE_KEYS=0xYOUR_DEPLOYER_PRIVATE_KEY
+FEE_ACCOUNT=
+```
+
+`FEE_ACCOUNT` is optional. If omitted, the deploy script uses the second configured account, then falls back to the deployer.
+
+## Local Development
+
+Start a local Hardhat chain:
+
+```bash
+npx hardhat node
+```
+
+Deploy contracts locally:
+
+```bash
+npx hardhat run --network localhost scripts/1_deploy.js
+```
+
+Seed local exchange activity:
+
+```bash
+npx hardhat run --network localhost scripts/2_seed-exchange.js
+```
+
+Start the React app:
+
+```bash
+npm run start
+```
+
+## Base Sepolia Deployment
+
+Deploy to Base Sepolia:
+
+```bash
+npx hardhat run --network baseSepolia scripts/1_deploy.js
+```
+
+The deploy script updates `src/config.json` with deployed contract addresses. It is resumable: if a contract address already exists in config, the script reuses it instead of redeploying. To force fresh contracts:
+
+```bash
+FORCE_REDEPLOY=true npx hardhat run --network baseSepolia scripts/1_deploy.js
+```
+
+## Build
+
+Create a production build:
+
+```bash
+npm run build
+```

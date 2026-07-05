@@ -90,23 +90,44 @@ export const loadBalances = async (exchange, tokens, account, dispatch) => {
   dispatch({ type: 'EXCHANGE_TOKEN_2_BALANCE_LOADED', balance })
 }
 
-export const loadAllOrders = async (provider, exchange, dispatch) => {
+const queryFilterInChunks = async (contract, eventName, fromBlock, toBlock) => {
+	const chunkSize = 2000
+	const events = []
+
+	for (let start = fromBlock; start <= toBlock; start += chunkSize) {
+		const end = Math.min(start + chunkSize - 1, toBlock)
+		const chunk = await contract.queryFilter(eventName, start, end)
+		events.push(...chunk)
+	}
+
+	return events
+}
+
+export const loadAllOrders = async (provider, exchange, dispatch, fromBlock) => {
 	const block = await provider.getBlockNumber()
+	const startBlock = fromBlock || Math.max(block - 10000, 0)
 
-	const cancelStream = await exchange.queryFilter('Cancel', 0, block)
-	const cancelledOrders = cancelStream.map(event => event.args)
+	try {
+		const cancelStream = await queryFilterInChunks(exchange, 'Cancel', startBlock, block)
+		const cancelledOrders = cancelStream.map(event => event.args)
 
-	dispatch({ type: 'CANCELLED_ORDERS_LOADED', cancelledOrders })
+		dispatch({ type: 'CANCELLED_ORDERS_LOADED', cancelledOrders })
 
-	const tradeStream = await exchange.queryFilter('Trade', 0, block)
-	const filledOrders = tradeStream.map(event => event.args)
+		const tradeStream = await queryFilterInChunks(exchange, 'Trade', startBlock, block)
+		const filledOrders = tradeStream.map(event => event.args)
 
-	dispatch({ type: 'FILLED_ORDERS_LOADED', filledOrders })
+		dispatch({ type: 'FILLED_ORDERS_LOADED', filledOrders })
 
-	const orderStream = await exchange.queryFilter('Order', 0, block)
-	const allOrders = orderStream.map(event => event.args)
+		const orderStream = await queryFilterInChunks(exchange, 'Order', startBlock, block)
+		const allOrders = orderStream.map(event => event.args)
 
-	dispatch({ type: 'ALL_ORDERS_LOADED', allOrders })
+		dispatch({ type: 'ALL_ORDERS_LOADED', allOrders })
+	} catch (error) {
+		console.error('Failed to load historical orders', error)
+		dispatch({ type: 'CANCELLED_ORDERS_LOADED', cancelledOrders: [] })
+		dispatch({ type: 'FILLED_ORDERS_LOADED', filledOrders: [] })
+		dispatch({ type: 'ALL_ORDERS_LOADED', allOrders: [] })
+	}
 }
 
 export const transferTokens = async (provider,exchange, transferType, token, amount, dispatch) => {

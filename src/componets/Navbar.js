@@ -18,10 +18,33 @@ const Navbar = () => {
   }
 
   const networkHandler = async (e) => {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: e.target.value }],
-    })
+    const chainId = e.target.value
+
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId }],
+      })
+    } catch (error) {
+      if (error.code === 4902 && chainId === '0x14A34') {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0x14A34',
+            chainName: 'Base Sepolia',
+            nativeCurrency: {
+              name: 'Ether',
+              symbol: 'ETH',
+              decimals: 18,
+            },
+            rpcUrls: ['https://sepolia.base.org'],
+            blockExplorerUrls: ['https://sepolia.basescan.org'],
+          }],
+        })
+      } else {
+        throw error
+      }
+    }
   }
 
   return(
@@ -38,7 +61,7 @@ const Navbar = () => {
           <select name="networks" id="networks" value={config[chainId] ? `0x${chainId.toString(16)}` : `0`} onChange={networkHandler}>
             <option value="0" disabled>Select Network</option>
             <option value="0x7A69">Localhost</option>
-            <option value="0x5">Goerli</option>
+            <option value="0x14A34">Base Sepolia</option>
           </select>
         )}
 
@@ -52,7 +75,7 @@ const Navbar = () => {
         )}
         {account ? (
           <a
-            href={config[chainId] ? `${config[chainId].explorerURL}/address/${account}` : `#`}
+            href={config[chainId] ? `${config[chainId].exploreURL}/address/${account}` : `#`}
             target='_blank'
             rel='noreferrer'
           >

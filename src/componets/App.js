@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import config from '../config.json';
 
@@ -26,18 +26,22 @@ import Alert from './Alert'
 function App() {
   const dispatch = useDispatch()
 
-  const loadBlockchainData = async () => {
+  const loadBlockchainData = useCallback(async () => {
 
     const provider = loadProvider(dispatch)
     const chainId = await loadNetwork(provider, dispatch)
 
     window.ethereum.on('chainChanged', () =>{
-      window.locaton.reload()
+      window.location.reload()
     })
 
     window.ethereum.on('accountsChanged', () => {
       loadAccount(provider, dispatch)
     })
+
+    if (!config[chainId]) {
+      return
+    }
 
     const DApp = config[chainId].DApp
     const mETH = config[chainId].mETH
@@ -46,14 +50,14 @@ function App() {
     const exchangeConfig= config[chainId].exchange
     const exchange = await loadExchange(provider, exchangeConfig.address, dispatch)
 
-    loadAllOrders(provider, exchange, dispatch)
+    loadAllOrders(provider, exchange, dispatch, exchangeConfig.deploymentBlock)
 
     subscribeToEvents(exchange, dispatch)
-  }
+  }, [dispatch])
 
   useEffect(() => {
-    loadBlockchainData(subscribeToEvents)
-  })
+    loadBlockchainData()
+  }, [loadBlockchainData])
 
   return (
     <div>

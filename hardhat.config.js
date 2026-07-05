@@ -1,15 +1,20 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
-const privateKeys = process.env.PRIVATE_KEYS || ""
+const privateKeys = process.env.PRIVATE_KEYS || "";
+const accounts = privateKeys
+  .split(",")
+  .map((key) => key.trim())
+  .filter(Boolean);
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.9",
   networks: {
     localhost: {},
-    goerli: {
-      url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      accounts: privateKeys.split(', '),
+    baseSepolia: {
+      url: process.env.BASE_SEPOLIA_RPC_URL || "https://sepolia.base.org",
+      chainId: 84532,
+      accounts,
     }
   },
 };
